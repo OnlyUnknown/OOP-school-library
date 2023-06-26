@@ -61,30 +61,26 @@ After you're finished please remove all the comments and instructions!
 <!-- PROJECT DESCRIPTION -->
 
 
-# 📖 Book Store <a name="about-project"></a>
+# 📖 OOP school library <a name="about-project"></a>
 
-It is a book store that can show add and remove books
+It is an OPP school library that has used an object-oriented program
 
 ## 🛠 Built With <a name="built-with"></a>
--HTML
--CSS
--JS
--React
+-ruby
 
 
 <!-- Features -->
 
 ### Key Features <a name="key-features"></a>
 
-- Single page application
-- Has ability to move bitween pages
+- Have the ability to add people by class of ruby
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- 
 ## 🚀 Live Demo <a name="live-demo"></a>
 
-[Live view](https://math-magician-abdullah-render.onrender.com)
+[Live view]()
 
 
 

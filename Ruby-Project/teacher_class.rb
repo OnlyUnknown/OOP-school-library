@@ -6,6 +6,6 @@ class Teacher < person
   end
 
   def can_use_services?
-    true
+    @can_use_services = true
   end
 end

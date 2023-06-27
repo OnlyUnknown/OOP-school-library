@@ -1,9 +1,10 @@
-require './nameable_class'
-class  Person < Nameable
+require_relative 'nameable_class'
+class Person < Nameable
   attr_accessor :name, :age
   attr_reader :id
 
   def initialize(age, name = 'Unknown', parent_permission: true)
+    super()
     @id = Random.rand(1..1000)
     @name = name
     @age = age
@@ -35,7 +36,8 @@ class Decorator < Nameable
     super()
     @nameable = nameable
   end
-  def correct_name 
+
+  def correct_name
     @nameable.correct_name
   end
 end
@@ -47,12 +49,7 @@ class CapitalizeDecorator < Decorator
 end
 
 class TrimmerDecorator < Decorator
-  def 
-    if super.size > 10
-      def correct_name
-        super[0..10]
-      end
-    end
+  def correct_name
+    super[0..9]
   end
-
-
+end

@@ -48,7 +48,11 @@ end
 
 class TrimmerDecorator < Decorator
   def 
-    if super.length > 10
-
+    if super.size > 10
+      def correct_name
+        super[0..10]
+      end
+    end
+  end
 
 

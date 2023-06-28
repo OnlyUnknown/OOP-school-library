@@ -9,7 +9,7 @@ class Person < Nameable
     @name = name
     @age = age
     @parent_permission = parent_permission
-    @Rental = []
+    @rental = []
   end
 
   def can_use_services?

@@ -6,9 +6,9 @@ class Rental
     @date = date
 
     @person = person
-    Person.Rental << self
+    person.Rental << self
 
     @book = book
-    Book.Rental << self
+    book.Rental << self
   end
 end

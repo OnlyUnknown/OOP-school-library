@@ -15,9 +15,9 @@ end
 def select_option(selected, app)
   case selected
   when 1
-    app.list_all_books
+    app.all_books
   when 2
-    app.list_all_people
+    app.all_people
   when 3
     app.create_person
   when 4
@@ -25,7 +25,7 @@ def select_option(selected, app)
   when 5
     app.create_rental
   when 6
-    app.list_rentals_for_person
+    app.books_rented
   else
     puts 'Invalid input'
   end

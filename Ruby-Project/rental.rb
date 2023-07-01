@@ -1,3 +1,4 @@
+require_relative 'book'
 class Rental
   attr_reader :person, :book
   attr_accessor :date
@@ -6,9 +7,8 @@ class Rental
     @date = date
 
     @person = person
-    person.Rental << self
-
+    person.rental << self
     @book = book
-    book.Rental << self
+    book.rental << self
   end
 end

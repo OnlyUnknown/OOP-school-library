@@ -1,4 +1,5 @@
 require_relative 'nameable_class'
+
 class Person < Nameable
   attr_accessor :name, :age
   attr_reader :id
@@ -9,6 +10,7 @@ class Person < Nameable
     @name = name
     @age = age
     @parent_permission = parent_permission
+    @position = ""
     @rental = []
   end
 

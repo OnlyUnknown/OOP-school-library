@@ -30,10 +30,10 @@ class App
     all_people
     puts 'Chose the person by id'
     person_id = gets.chomp.to_i
-    @people.find { |p| p.id == person_id }
+    person = @people.find { |p| p.id == person_id }
     puts "Rentals for Person ID #{person_id}:"
-    @rentals.each do |rental|
-      puts "Date: #{rental.date}, Book Title: "
+    person.rental.each do |rental|
+      puts "Date: #{rental.date}, Book Title: #{rental.book.title}, By: #{rental.book.author} "
     end
   end
 
@@ -106,7 +106,7 @@ class App
 
     puts 'Select the date'
     rental_date = gets.chomp
-    pushed = Rental.new(rental_date, @books[book_index], @people[person_index])
+    pushed = Rental.new(rental_date, @people[person_index], @books[book_index])
     @rentals.push(pushed)
     puts 'Rental has been added'
   end

@@ -7,7 +7,8 @@ class Rental
     @date = date
 
     @person = person
-
+    person.rental << self
     @book = book
+    book.rental << self
   end
 end

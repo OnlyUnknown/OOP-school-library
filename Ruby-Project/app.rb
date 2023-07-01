@@ -18,7 +18,13 @@ class App
     end
 end
 
-
+def all_books
+index = 0
+    @books.each do |b|
+        puts "#{index})" + "Title: #{b.title}"+ " Author: #{b.author}"
+        index += 1
+    end
+end
 
 def create_student
     puts "The name of the student"
@@ -81,7 +87,6 @@ end
 
 
     app = App.new
-    app.create_person()
-    app.create_person()
-
-    app.all_people()
+    app.create_book()
+    app.create_book()
+    app.all_books()

@@ -3,14 +3,12 @@ require_relative 'person_class'
 require_relative 'teacher_class'
 require_relative 'book'
 require_relative 'rental'
-require_relative 'classroom'
 class App
-  attr_accessor :classrooms, :people, :books, :rentals
+  attr_accessor :people, :books, :rentals
 
   def initialize
     @people = []
     @books = []
-    @classrooms = []
     @rentals = []
   end
 
@@ -42,8 +40,6 @@ class App
     name = gets.chomp
     puts 'The age of the student'
     age = gets.chomp
-    puts 'The classroom of the student'
-    classroom = gets.chomp
     if age < '18'
       puts 'Does he have the parent permission [Y/N]'
       parent_permission = gets.chomp
@@ -54,7 +50,7 @@ class App
         parent_permission = false
       end
     end
-    pushed = Student.new(age, classroom, parent_permission, name)
+    pushed = Student.new(age, parent_permission, name)
     @people.push(pushed)
     puts 'Student has been added'
   end

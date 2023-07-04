@@ -108,7 +108,7 @@ Clone this repository to your desired folder:
 
 ```sh
   cd my-folder
-  git https://github.com/OnlyUnknown/bookstore.git
+  git https://github.com/OnlyUnknown/OOP-school-library.git
 ```
 
 
@@ -117,7 +117,7 @@ Clone this repository to your desired folder:
 Install this project with:
 
 ```sh
-  cd bookstore
+  cd OOP-school-library
   node install
 ```
 
@@ -135,9 +135,12 @@ npm start
 
 ### Prerequisites
 
-Not necessary
+In order to run this project you need:
 
-
+- Git installed in desktop
+- Code editor of your choice i.e; Visual Studio Code
+- RUBY
+- Terminal of your choice i.e; Git Bash or CMD or Terminal
 
 
 <!--
@@ -194,6 +197,11 @@ Example:
 👤 **Abdullah Al-Khureif**
 
 - GitHub: [@OnlyUnknown](https://github.com/OnlyUnknown)
+
+👤 **Nirere Marie Christelle**
+- GitHub: [@Christelle-12](https://github.com/Christelle-12)
+- Twitter: [@Chr1Nirere](https://twitter.com/Chr1Nirere)
+- LinkedIn :[LinkedIn](https://www.linkedin.com/in/nirere-marie-christelle-9b139823b/)
 
 =======
 

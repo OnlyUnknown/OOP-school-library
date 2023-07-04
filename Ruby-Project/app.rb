@@ -3,24 +3,43 @@ require_relative 'person_class'
 require_relative 'teacher_class'
 require_relative 'book'
 require_relative 'rental'
+require_relative 'Opening_file'
+require 'json'
+
+
 class App
   attr_accessor :people, :books, :rentals
 
+
+  puts @finalbooksO
   def initialize
-    @people = []
-    @books = []
-    @rentals = []
+
+    
+    booksoutput = File.read('Ruby-Project/Books.json')
+    peopleoutput = File.read('Ruby-Project/people.json')
+    rentalsoutput = File.read('Ruby-Project/rentals.json')
+
+    if File.empty?('Ruby-Project/people.json')
+     @people = []
+    else 
+      @people = JSON.parse(peopleoutput)
+    end
+    @books = JSON.parse(booksoutput)
+    @rentals = JSON.parse(rentalsoutput)
   end
+ 
+
 
   def all_people
-    @people.each_with_index do |p, index|
-      puts "#{index})" "[#{p.position}]" + " ID: #{p.id}" + " Name: #{p.name}" + " Age: #{p.age}"
+    @people.each_with_index do |pe, index|
+      puts "#{index})" + " ID: #{pe['id']}" + " Name: #{pe['name']}" + " Age: #{pe['Age']}"
     end
   end
 
   def all_books
+ 
     @books.each_with_index do |b, index|
-      puts "#{index})" + "Title: #{b.title}" + " Author: #{b.author}"
+      puts "#{index})" + "Title: #{b["title"]}" + " Author: #{b["author"]}"
     end
   end
 
@@ -31,7 +50,7 @@ class App
     person = @people.find { |p| p.id == person_id }
     puts "Rentals for Person ID #{person_id}:"
     person.rental.each do |rental|
-      puts "Date: #{rental.date}, Book Title: #{rental.book.title}, By: #{rental.book.author} "
+      puts "Date: #{rental['date']}, Book Title: #{rental['book']['title']}, By: #{rental['book']['author']} "
     end
   end
 
@@ -51,7 +70,12 @@ class App
       end
     end
     pushed = Student.new(age, parent_permission, name)
-    @people.push(pushed)
+    p pushed.id
+    student = "Student"
+
+     json = {"id" => pushed.id ,"position" => student, "Age" => age, "name" => name}
+    writeFile("people.json", json)
+
     puts 'Student has been added'
   end
 
@@ -149,5 +173,9 @@ def main
 
     select_option(selected, app)
   end
+  # rentals_data = JSON.generate(@rentals)
+  # puts @books
+
+
   puts 'Thank you for using this app!'
 end

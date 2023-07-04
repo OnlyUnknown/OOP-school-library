@@ -3,14 +3,12 @@ require_relative 'person_class'
 require_relative 'teacher_class'
 require_relative 'book'
 require_relative 'rental'
-require_relative 'classroom'
 class App
-  attr_accessor :classrooms, :people, :books, :rentals
+  attr_accessor :people, :books, :rentals
 
   def initialize
     @people = []
     @books = []
-    @classrooms = []
     @rentals = []
   end
 
@@ -42,8 +40,6 @@ class App
     name = gets.chomp
     puts 'The age of the student'
     age = gets.chomp
-    puts 'The classroom of the student'
-    classroom = gets.chomp
     if age < '18'
       puts 'Does he have the parent permission [Y/N]'
       parent_permission = gets.chomp
@@ -54,7 +50,7 @@ class App
         parent_permission = false
       end
     end
-    pushed = Student.new(age, classroom, parent_permission, name)
+    pushed = Student.new(age, parent_permission, name)
     @people.push(pushed)
     puts 'Student has been added'
   end
@@ -110,4 +106,48 @@ class App
     @rentals.push(pushed)
     puts 'Rental has been added'
   end
+end
+
+def show_menu
+  puts ''
+  puts 'Please choose an option by entering a number:'
+  puts '1 - List all books'
+  puts '2 - List all people'
+  puts '3 - Create a person'
+  puts '4 - Create a book'
+  puts '5 - Create a rental'
+  puts '6 - List all rentals for a given person id'
+  puts '7 - Exit'
+end
+
+def select_option(selected, app)
+  case selected
+  when 1
+    app.all_books
+  when 2
+    app.all_people
+  when 3
+    app.create_person
+  when 4
+    app.create_book
+  when 5
+    app.create_rental
+  when 6
+    app.books_rented
+  else
+    puts 'Invalid input'
+  end
+end
+
+def main
+  app = App.new
+  puts 'Welcome to School Library App!'
+  loop do
+    show_menu
+    selected = gets.chomp.to_i
+    break if selected == 7
+
+    select_option(selected, app)
+  end
+  puts 'Thank you for using this app!'
 end

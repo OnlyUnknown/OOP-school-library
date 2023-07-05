@@ -18,9 +18,7 @@ class App
     @books = []
     @rentals = []
   end
- people = []
- books = []
- rentals = []
+
 
  def load_data
   books = JSON.parse(fetch_data('books'))
@@ -30,12 +28,11 @@ class App
   books.each do |book|
     @books << Book.new(book['title'], book['author'])
   end
-
   people.each do |person|
     @people << if person['position'] == 'Teacher'
                  Teacher.new(person['age'], person['specialization'], person['name'])
                else
-                 Student.new(person['age'], nil, person['name'], parent_permission: person['parent_permission'])
+                 Student.new(person["age"],  parent_permission: person['parent_permission'], name: person['name'] )
                end
   end
 
@@ -45,19 +42,54 @@ class App
     @rentals << Rental.new(rental['date'], rented_book[0], rentee)
   end
 end
-  
+def save_book
+  updated_books = []
+
+  @books.each do |book|
+    updated_books << { 'title' => book.title, 'author' => book.author }
+  end
+
+  File.write('Ruby-Project/books.json', JSON.pretty_generate(updated_books))
+end
+
+def save_people
+  updated_people = []
+
+  @people.each do |person|
+    if person.instance_of?(::Teacher)
+      updated_people << { 'position' => 'Teacher', 'id' => person.id, 'name' => person.name, 'age' => person.age,
+                          'specialization' => person.specialization }
+    elsif person.instance_of?(::Student)
+      updated_people << { 'position' => 'Student', 'id' => person.id, 'name' => person.name, 'age' => person.age,
+                          'parent_permission' => person.parent_permission }
+    end
+  end
+
+  File.write('Ruby-Project/people.json', JSON.pretty_generate(updated_people))
+end
+
+def save_rentals
+  updated_rentals = []
+
+  @rentals.each do |rental|
+    updated_rentals << { 'person_name' => rental.person.name, 'book_title' => rental.book.title,
+                         'date' => rental.date }
+  end
+
+  File.write('Ruby-Project/rentals.json', JSON.pretty_generate(updated_rentals))
+end
 
 
   def all_people
     @people.each_with_index do |pe, index|
-      puts "#{index})" + "[#{pe["position"]}]" + " ID: #{pe['id']}" + " Name: #{pe['name']}" + " Age: #{pe['Age']}"
+      puts "#{index})" + "[#{pe.position}]" + " ID: #{pe.id}" + " Name: #{pe.name}" + " Age: #{pe.age}"
     end
   end
 
   def all_books
  
     @books.each_with_index do |b, index|
-      puts "#{index})" + "Title: #{b["title"]}" + " Author: #{b["author"]}"
+      puts "#{index})" + "Title: #{b.title}" + " Author: #{b.author}"
     end
   end
 
@@ -178,6 +210,7 @@ end
 
 def main
   app = App.new
+  app.load_data
   puts 'Welcome to School Library App!'
   loop do
     show_menu
@@ -188,7 +221,9 @@ def main
   end
   # rentals_data = JSON.generate(@rentals)
   # puts @books
-
+  app.save_people
+  app.save_book
+  app.save_rentals
 
   puts 'Thank you for using this app!'
 end

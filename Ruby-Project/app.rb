@@ -11,28 +11,46 @@ class App
   attr_accessor :people, :books, :rentals
 
 
-  puts @finalbooksO
   def initialize
 
-    
-    booksoutput = File.read('Ruby-Project/Books.json')
-    peopleoutput = File.read('Ruby-Project/people.json')
-    rentalsoutput = File.read('Ruby-Project/rentals.json')
 
-    if File.empty?('Ruby-Project/people.json')
      @people = []
-    else 
-      @people = JSON.parse(peopleoutput)
-    end
-    @books = JSON.parse(booksoutput)
-    @rentals = JSON.parse(rentalsoutput)
+    @books = []
+    @rentals = []
   end
- 
+ people = []
+ books = []
+ rentals = []
+
+ def load_data
+  books = JSON.parse(fetch_data('books'))
+  people = JSON.parse(fetch_data('people'))
+  rentals = JSON.parse(fetch_data('rentals'))
+
+  books.each do |book|
+    @books << Book.new(book['title'], book['author'])
+  end
+
+  people.each do |person|
+    @people << if person['position'] == 'Teacher'
+                 Teacher.new(person['age'], person['specialization'], person['name'])
+               else
+                 Student.new(person['age'], nil, person['name'], parent_permission: person['parent_permission'])
+               end
+  end
+
+  rentals.each do |rental|
+    rentee = @people.find { |person| person.name == rental['person_name'] }
+    rented_book = @books.select { |book| book.title == rental['book_title'] }
+    @rentals << Rental.new(rental['date'], rented_book[0], rentee)
+  end
+end
+  
 
 
   def all_people
     @people.each_with_index do |pe, index|
-      puts "#{index})" + " ID: #{pe['id']}" + " Name: #{pe['name']}" + " Age: #{pe['Age']}"
+      puts "#{index})" + "[#{pe["position"]}]" + " ID: #{pe['id']}" + " Name: #{pe['name']}" + " Age: #{pe['Age']}"
     end
   end
 
@@ -70,12 +88,7 @@ class App
       end
     end
     pushed = Student.new(age, parent_permission, name)
-    p pushed.id
-    student = "Student"
-
-     json = {"id" => pushed.id ,"position" => student, "Age" => age, "name" => name}
-    writeFile("people.json", json)
-
+    @people << pushed
     puts 'Student has been added'
   end
 

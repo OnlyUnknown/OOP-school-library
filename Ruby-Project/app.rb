@@ -3,82 +3,77 @@ require_relative 'person_class'
 require_relative 'teacher_class'
 require_relative 'book'
 require_relative 'rental'
-require_relative 'Opening_file'
+require_relative 'opening_file'
 require 'json'
-
 
 class App
   attr_accessor :people, :books, :rentals
 
-
   def initialize
-
-
-     @people = []
+    @people = []
     @books = []
     @rentals = []
   end
 
+  def load_data
+    books = JSON.parse(fetch_data('books'))
+    people = JSON.parse(fetch_data('people'))
+    rentals = JSON.parse(fetch_data('rentals'))
 
- def load_data
-  books = JSON.parse(fetch_data('books'))
-  people = JSON.parse(fetch_data('people'))
-  rentals = JSON.parse(fetch_data('rentals'))
+    books.each do |book|
+      @books << Book.new(book['title'], book['author'])
+    end
+    people.each do |person|
+      @people << if person['position'] == 'Teacher'
+                   Teacher.new(person['age'], person['specialization'], person['name'])
+                 else
+                   Student.new(person['age'], parent_permission: person['parent_permission'], name: person['name'])
+                 end
+    end
 
-  books.each do |book|
-    @books << Book.new(book['title'], book['author'])
-  end
-  people.each do |person|
-    @people << if person['position'] == 'Teacher'
-                 Teacher.new(person['age'], person['specialization'], person['name'])
-               else
-                 Student.new(person["age"],  parent_permission: person['parent_permission'], name: person['name'] )
-               end
-  end
-
-  rentals.each do |rental|
-    rentee = @people.find { |person| person.name == rental['person_name'] }
-    rented_book = @books.select { |book| book.title == rental['book_title'] }
-    @rentals << Rental.new(rental['date'], rented_book[0], rentee)
-  end
-end
-def save_book
-  updated_books = []
-
-  @books.each do |book|
-    updated_books << { 'title' => book.title, 'author' => book.author }
-  end
-
-  File.write('Ruby-Project/books.json', JSON.pretty_generate(updated_books))
-end
-
-def save_people
-  updated_people = []
-
-  @people.each do |person|
-    if person.instance_of?(::Teacher)
-      updated_people << { 'position' => 'Teacher', 'id' => person.id, 'name' => person.name, 'age' => person.age,
-                          'specialization' => person.specialization }
-    elsif person.instance_of?(::Student)
-      updated_people << { 'position' => 'Student', 'id' => person.id, 'name' => person.name, 'age' => person.age,
-                          'parent_permission' => person.parent_permission }
+    rentals.each do |rental|
+      rentee = @people.find { |person| person.name == rental['person_name'] }
+      rented_book = @books.select { |book| book.title == rental['book_title'] }
+      @rentals << Rental.new(rental['date'], rented_book[0], rentee)
     end
   end
 
-  File.write('Ruby-Project/people.json', JSON.pretty_generate(updated_people))
-end
+  def save_book
+    updated_books = []
 
-def save_rentals
-  updated_rentals = []
+    @books.each do |book|
+      updated_books << { 'title' => book.title, 'author' => book.author }
+    end
 
-  @rentals.each do |rental|
-    updated_rentals << { 'person_name' => rental.person.name, 'book_title' => rental.book.title,
-                         'date' => rental.date }
+    File.write('Ruby-Project/books.json', JSON.pretty_generate(updated_books))
   end
 
-  File.write('Ruby-Project/rentals.json', JSON.pretty_generate(updated_rentals))
-end
+  def save_people
+    updated_people = []
 
+    @people.each do |person|
+      if person.instance_of?(::Teacher)
+        updated_people << { 'position' => 'Teacher', 'id' => person.id, 'name' => person.name, 'age' => person.age,
+                            'specialization' => person.specialization }
+      elsif person.instance_of?(::Student)
+        updated_people << { 'position' => 'Student', 'id' => person.id, 'name' => person.name, 'age' => person.age,
+                            'parent_permission' => person.parent_permission }
+      end
+    end
+
+    File.write('Ruby-Project/people.json', JSON.pretty_generate(updated_people))
+  end
+
+  def save_rentals
+    updated_rentals = []
+
+    @rentals.each do |rental|
+      updated_rentals << { 'person_name' => rental.person.name, 'book_title' => rental.book.title,
+                           'date' => rental.date }
+    end
+
+    File.write('Ruby-Project/rentals.json', JSON.pretty_generate(updated_rentals))
+  end
 
   def all_people
     @people.each_with_index do |pe, index|
@@ -87,7 +82,6 @@ end
   end
 
   def all_books
- 
     @books.each_with_index do |b, index|
       puts "#{index})" + "Title: #{b.title}" + " Author: #{b.author}"
     end

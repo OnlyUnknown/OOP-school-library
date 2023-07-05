@@ -1,4 +1,5 @@
 require_relative 'person_class'
+
 class Student < Person
   attr_accessor :parent_permission, :id, :name, :rental
   attr_reader :position

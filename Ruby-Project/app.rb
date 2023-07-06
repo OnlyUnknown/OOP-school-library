@@ -27,7 +27,7 @@ class App
       @people << if person['position'] == 'Teacher'
                    Teacher.new(person['age'], person['specialization'], person['name'])
                  else
-                   Student.new(person['age'], parent_permission: person['parent_permission'], name: person['name'])
+                   Student.new(person['age'], person['parent_permission'], person['name'])
                  end
     end
 

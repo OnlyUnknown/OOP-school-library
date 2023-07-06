@@ -19,24 +19,22 @@ class App
     books = JSON.parse(fetch_data('Books'))
     people = JSON.parse(fetch_data('people'))
     rentals = JSON.parse(fetch_data('rentals'))
-  
+
     books.each do |book|
       @books << Book.new(book['title'], book['author'])
     end
     people.each do |person|
       @people << if person['position'] == 'Teacher'
-                     Teacher.new(person['age'], person['specialization'], person['name'])
-                   else
-                     Student.new(person['age'], parent_permission: person['parent_permission'], name: person['name'])
-                   end
+                   Teacher.new(person['age'], person['specialization'], person['name'])
+                 else
+                   Student.new(person['age'], parent_permission: person['parent_permission'], name: person['name'])
+                 end
     end
-  
+
     rentals.each do |rental|
-      if rental['book_title']
-        @books.find { |b| b.title == rental['book_title'] }.rental << self
-      end
+      @books.find { |b| b.title == rental['book_title'] }.rental << self if rental['book_title']
     end
-  end  
+  end
 
   def save_book
     updated_books = []

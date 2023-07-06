@@ -3,6 +3,9 @@ require_relative 'person_class'
 require_relative 'teacher_class'
 require_relative 'book'
 require_relative 'rental'
+require_relative 'opening_file'
+require 'json'
+
 class App
   attr_accessor :people, :books, :rentals
 
@@ -12,9 +15,67 @@ class App
     @rentals = []
   end
 
+  def load_data
+    books = JSON.parse(fetch_data('Books'))
+    people = JSON.parse(fetch_data('people'))
+    rentals = JSON.parse(fetch_data('rentals'))
+
+    books.each do |book|
+      @books << Book.new(book['title'], book['author'])
+    end
+    people.each do |person|
+      @people << if person['position'] == 'Teacher'
+                   Teacher.new(person['age'], person['specialization'], person['name'])
+                 else
+                   Student.new(person['age'], parent_permission: person['parent_permission'], name: person['name'])
+                 end
+    end
+
+    rentals.each do |rental|
+      @books.find { |b| b.title == rental['book_title'] }.rental << self if rental['book_title']
+    end
+  end
+
+  def save_book
+    updated_books = []
+
+    @books.each do |book|
+      updated_books << { 'title' => book.title, 'author' => book.author }
+    end
+
+    File.write('Ruby-Project/books.json', JSON.pretty_generate(updated_books))
+  end
+
+  def save_people
+    updated_people = []
+
+    @people.each do |person|
+      if person.instance_of?(::Teacher)
+        updated_people << { 'position' => 'Teacher', 'id' => person.id, 'name' => person.name, 'age' => person.age,
+                            'specialization' => person.specialization }
+      elsif person.instance_of?(::Student)
+        updated_people << { 'position' => 'Student', 'id' => person.id, 'name' => person.name, 'age' => person.age,
+                            'parent_permission' => person.parent_permission }
+      end
+    end
+
+    File.write('Ruby-Project/people.json', JSON.pretty_generate(updated_people))
+  end
+
+  def save_rentals
+    updated_rentals = []
+
+    @rentals.each do |rental|
+      updated_rentals << { 'person_name' => rental.person.name, 'book_title' => rental.book.title,
+                           'date' => rental.date }
+    end
+
+    File.write('Ruby-Project/rentals.json', JSON.pretty_generate(updated_rentals))
+  end
+
   def all_people
-    @people.each_with_index do |p, index|
-      puts "#{index})" "[#{p.position}]" + " ID: #{p.id}" + " Name: #{p.name}" + " Age: #{p.age}"
+    @people.each_with_index do |pe, index|
+      puts "#{index})" + "[#{pe.position}]" + " ID: #{pe.id}" + " Name: #{pe.name}" + " Age: #{pe.age}"
     end
   end
 
@@ -51,7 +112,7 @@ class App
       end
     end
     pushed = Student.new(age, parent_permission, name)
-    @people.push(pushed)
+    @people << pushed
     puts 'Student has been added'
   end
 
@@ -141,6 +202,7 @@ end
 
 def main
   app = App.new
+  app.load_data
   puts 'Welcome to School Library App!'
   loop do
     show_menu
@@ -149,5 +211,11 @@ def main
 
     select_option(selected, app)
   end
+  # rentals_data = JSON.generate(@rentals)
+  # puts @books
+  app.save_people
+  app.save_book
+  app.save_rentals
+
   puts 'Thank you for using this app!'
 end

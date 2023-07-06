@@ -94,7 +94,7 @@ class App
     person = @people.find { |p| p.id == person_id }
     puts "Rentals for Person ID #{person_id}:"
     person.rental.each do |rental|
-      puts "Date: #{rental['date']}, Book Title: #{rental['book']['title']}, By: #{rental['book']['author']} "
+      puts "Date: #{rental.date}, Book Title: #{rental.book.title}, By: #{rental.book.author} "
     end
   end
 
@@ -103,7 +103,7 @@ class App
     name = gets.chomp
     puts 'The age of the student'
     age = gets.chomp
-    if age < '18'
+    if age < "18"
       puts 'Does he have the parent permission [Y/N]'
       parent_permission = gets.chomp
 

@@ -103,7 +103,7 @@ class App
     name = gets.chomp
     puts 'The age of the student'
     age = gets.chomp
-    if age < "18"
+    if age < '18'
       puts 'Does he have the parent permission [Y/N]'
       parent_permission = gets.chomp
 

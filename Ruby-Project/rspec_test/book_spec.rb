@@ -18,4 +18,8 @@ describe "book class methods" do
     it "return the books has been rented" do
         expect(@rental.book.title).to eql "title"
     end
+    it "return the books has been rented" do
+        expect(@rental.person.name).to eql "jack"
+    end
+
 end

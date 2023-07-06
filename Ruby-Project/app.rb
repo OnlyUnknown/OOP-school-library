@@ -16,7 +16,7 @@ class App
   end
 
   def load_data
-    books = JSON.parse(fetch_data('books'))
+    books = JSON.parse(fetch_data('Books'))
     people = JSON.parse(fetch_data('people'))
     rentals = JSON.parse(fetch_data('rentals'))
 

@@ -13,6 +13,7 @@ describe 'book class methods' do
   it 'returns the position of the student' do
     expect(@student.position).to eql 'Student'
   end
+
   it 'it returns ¯(ツ)/¯' do
     expect(@student.parent_permission).to eql true
   end

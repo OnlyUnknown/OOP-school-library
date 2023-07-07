@@ -1,8 +1,8 @@
 require_relative '../classroom'
 
 describe Classroom do
-  let(:classroom_label) { "Class A" }
-  let(:student) { double("Student") }
+  let(:classroom_label) { 'Class A' }
+  let(:student) { double('Student') }
 
   it 'should initialize with a label' do
     classroom = Classroom.new(classroom_label)

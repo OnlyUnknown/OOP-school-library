@@ -4,8 +4,8 @@ require_relative '../book'
 require_relative '../rental'
 
 describe Rental do
-  let(:person) { Person.new("John Doe") }
-  let(:book) { Book.new("Book Title", "Author Name") }
+  let(:person) { Person.new('John Doe') }
+  let(:book) { Book.new('Book Title', 'Author Name') }
   let(:date) { Date.today }
 
   it 'should initialize with a date, person, and book' do

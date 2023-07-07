@@ -1,6 +1,6 @@
 require_relative '../classroom'
 
-describe Classroom do
+describe 'Classroom' do
   let(:classroom_label) { 'Class A' }
   let(:student) { double('Student') }
 

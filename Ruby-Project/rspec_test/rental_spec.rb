@@ -1,7 +1,7 @@
-require 'date'
-require_relative '../person_class'
-require_relative '../book'
 require_relative '../rental'
+require_relative '../book'
+require_relative '../person_class'
+require 'date'
 
 describe Rental do
   let(:person) { Person.new('John Doe') }
